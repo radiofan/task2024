@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\SensorsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +14,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::prefix('measures')->group(function(){
+	Route::prefix('sensors')->group(function(){
+		Route::match(['put', 'post'], '/{sensor_id}', [SensorsController::class, 'add_measure'])
+			->whereNumber('sensor_id')
+			->name('add_measure');
 
-/*
-Route::middleware('auth:sanctum')->get('/user', function(Request $request){
-	return $request->user();
+		Route::get('/{sensor_id}', [SensorsController::class, 'get_measures'])
+			->whereNumber('sensor_id')
+			->name('get_measures_for_sensor');
+
+		Route::get('/{sensor_id}/parameters/{parameter}', [SensorsController::class, 'get_measures'])
+			->whereNumber('sensor_id')
+			->name('get_measures_for_sensor_parameter');
+	});
+
+	Route::get('/', [SensorsController::class, 'get_measures'])
+		->name('get_measures');
 });
-*/
