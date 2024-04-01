@@ -15,20 +15,24 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('measures')->group(function(){
-	Route::prefix('sensors')->group(function(){
-		Route::match(['put', 'post'], '/{sensor_id}', [SensorsController::class, 'add_measure'])
-			->whereNumber('sensor_id')
-			->name('add_measure');
-
-		Route::get('/{sensor_id}', [SensorsController::class, 'get_measures'])
-			->whereNumber('sensor_id')
-			->name('get_measures_for_sensor');
-
-		Route::get('/{sensor_id}/parameters/{parameter}', [SensorsController::class, 'get_measures'])
-			->whereNumber('sensor_id')
-			->name('get_measures_for_sensor_parameter');
-	});
 
 	Route::get('/', [SensorsController::class, 'get_measures'])
-		->name('get_measures');
+		->name('get');
+	
+	Route::prefix('sensors')->group(function(){
+		Route::match(['put', 'post'], '/{sensor}', [SensorsController::class, 'add_measure'])
+			->name('add');
+
+		Route::get('/{sensor}', [SensorsController::class, 'get_measures'])
+			->name('get.sensor');
+
+		Route::get('/{sensor}/parameters/{parameter}', [SensorsController::class, 'get_measures'])
+			->name('get.sensor.parameter')
+			->scopeBindings();
+	});
+	
+})->name('measures.');
+
+Route::fallback(function(){
+	return response()->json()->setStatusCode(404);
 });

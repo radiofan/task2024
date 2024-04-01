@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Parameter;
+use App\Models\Sensor;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\RateLimiter;
@@ -22,6 +24,9 @@ class RouteServiceProvider extends ServiceProvider{
 	 */
 	public function boot(): void{
 		$this->configureRateLimiting();
+
+		Route::model('sensor', Sensor::class);
+		Route::model('parameter', Parameter::class);
 
 		$this->routes(function(){
 			Route::middleware('api')
