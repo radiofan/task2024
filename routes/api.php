@@ -19,17 +19,8 @@ Route::prefix('measures')->group(function(){
 	Route::get('/', [SensorsController::class, 'get_measures'])
 		->name('get');
 	
-	Route::prefix('sensors')->group(function(){
-		Route::match(['put', 'post'], '/{sensor}', [SensorsController::class, 'add_measure'])
-			->name('add');
-
-		Route::get('/{sensor}', [SensorsController::class, 'get_measures'])
-			->name('get.sensor');
-
-		Route::get('/{sensor}/parameters/{parameter}', [SensorsController::class, 'get_measures'])
-			->name('get.sensor.parameter')
-			->scopeBindings();
-	});
+	Route::match(['put', 'post'], '/sensors/{sensor}', [SensorsController::class, 'add_measure'])
+		->name('add');
 	
 })->name('measures.');
 
